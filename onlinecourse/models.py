@@ -94,7 +94,6 @@ class Enrollment(models.Model):
     mode = models.CharField(max_length=5, choices=COURSE_MODES, default=AUDIT)
     rating = models.FloatField(default=5.0)
 
-
 # <HINT> Create a Question Model with:
     # Used to persist question content for a course
     # Has a One-To-Many (or Many-To-Many if you want to reuse questions) relationship with course
@@ -106,14 +105,20 @@ class Enrollment(models.Model):
     # question text
     # question grade/mark
 
+class Question(models.Model):
+    #lesson_id
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    question_test = models.TextField()
+    grade = models.FloatField()
+
     # <HINT> A sample model method to calculate if learner get the score of the question
-    #def is_get_score(self, selected_ids):
-    #    all_answers = self.choice_set.filter(is_correct=True).count()
-    #    selected_correct = self.choice_set.filter(is_correct=True, id__in=selected_ids).count()
-    #    if all_answers == selected_correct:
-    #        return True
-    #    else:
-    #        return False
+    def is_get_score(self, selected_ids):
+       all_answers = self.choice_set.filter(is_correct=True).count()
+       selected_correct = self.choice_set.filter(is_correct=True, id__in=selected_ids).count()
+       if all_answers == selected_correct:
+           return True
+       else:
+           return False
 
 
 #  <HINT> Create a Choice Model with:
